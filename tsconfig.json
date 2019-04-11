@@ -17,6 +17,14 @@
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
+    "paths": {
+      "last-fm-scrobbles": [
+        "dist/last-fm-scrobbles"
+      ],
+      "last-fm-scrobbles/*": [
+        "dist/last-fm-scrobbles/*"
+      ]
+    }
   }
 }

@@ -134,6 +134,41 @@
           }
         }
       }
+    },
+    "last-fm-scrobbles": {
+      "root": "projects/last-fm-scrobbles",
+      "sourceRoot": "projects/last-fm-scrobbles/src",
+      "projectType": "library",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/last-fm-scrobbles/tsconfig.lib.json",
+            "project": "projects/last-fm-scrobbles/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/last-fm-scrobbles/src/test.ts",
+            "tsConfig": "projects/last-fm-scrobbles/tsconfig.spec.json",
+            "karmaConfig": "projects/last-fm-scrobbles/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/last-fm-scrobbles/tsconfig.lib.json",
+              "projects/last-fm-scrobbles/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
     }
   },
   "defaultProject": "last-fm-scrobbles-widget"

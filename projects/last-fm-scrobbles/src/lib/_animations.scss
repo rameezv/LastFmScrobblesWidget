@@ -1,0 +1,27 @@
+@keyframes heartbeat {
+  from {
+    transform: scale(1);
+    transform-origin: center center;
+    animation-timing-function: ease-out;
+    border-color: #333333;
+  }
+  10% {
+    transform: scale(0.96);
+    animation-timing-function: ease-in;
+    border-color: #993333;
+  }
+  17% {
+    transform: scale(0.99);
+    animation-timing-function: ease-out;
+  }
+  33% {
+    transform: scale(0.93);
+    animation-timing-function: ease-in;
+    border-color: #333333;
+  }
+  45% {
+    transform: scale(1);
+    animation-timing-function: ease-out;
+    border-color: #993333;
+  }
+}

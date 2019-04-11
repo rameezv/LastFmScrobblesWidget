@@ -1,0 +1,35 @@
+<ng-container *ngIf="latestTrack$ | async as latestTrack">
+  <h3><mat-icon>headset</mat-icon>{{ (isNowPlaying$ | async) ? 'Currently listening to:' : 'My last-played track:' }}</h3>
+  <div  matRipple matRippleColor="rgba(255,0,0,0.1)" (click)="expandRecent = !expandRecent"
+    class="latest-track" [ngClass]="{'now-playing': isNowPlaying$ | async, 'expanded': expandRecent}">
+    <last-fm-internal-eq [color]="accentColor" *ngIf="isNowPlaying$ | async"></last-fm-internal-eq>
+    <div class="album-art">
+      <img *ngIf="latestTrack.image[latestTrack.image.length - 1]['#text']; else noalbumart"
+      [src]="latestTrack.image[latestTrack.image.length - 1]['#text']" />
+      <ng-template #noalbumart>
+        <div class="no-album-art"><mat-icon>headset</mat-icon></div>
+      </ng-template>
+    </div>
+    <div class="track-info">
+      <div class="artist">{{ latestTrack.artist['#text'] }}</div>
+      <div class="name">{{ latestTrack.name }}</div>
+    </div>
+    <div class="expand"><mat-icon>{{ expandRecent ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}</mat-icon></div>
+  </div>
+  <ng-container *ngIf="recentlyPlayedTracks$ | async as recentTracks">
+    <div [ngClass]="{'visible': (recentTracks.length > 1 && expandRecent)}" class="recently-played">
+      <h3>Recently Played:</h3>
+      <div *ngFor="let track of recentTracks" class="recent-track">
+        <div class="album-art">
+          <img *ngIf="track.image[track.image.length - 1]['#text']; else noalbumartrecent" [src]="track.image[track.image.length - 1]['#text']" />
+          <ng-template #noalbumartrecent>
+            <div class="no-album-art"><mat-icon>headset</mat-icon></div>
+          </ng-template>
+        </div>
+        <div class="track-info">
+          <div class="artist">{{ track.artist['#text'] }}</div> - <div class="name">{{ track.name }}</div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</ng-container>
