@@ -38,6 +38,8 @@ A live demo can be seen on my [personal website](https://rameez.me).
 - Music streaming links for tracks
 - Configurable number of tracks
 - Configurable refresh rate
+- Custom background color
+- Deduping tracks (especially the most recent track)
 - _Your feature here_ - if you have any ideas, please feel free to contribute or make a feature request by opening an issue on GitHub
 
 ## Build
