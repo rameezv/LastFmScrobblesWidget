@@ -1,5 +1,5 @@
 {
-  "name": "last-fm-scrobbles",
+  "name": "angular-last-fm-scrobbles",
   "version": "0.0.1",
   "peerDependencies": {
     "@angular/animations": "^7.2.12",
