@@ -8,4 +8,4 @@ To demo the component, run `npm install`, then `ng serve` and navigate to `http:
 
 ## Build
 
-Run `ng build --prod last-fm-scrobbles` to build the library. The build artifacts will be stored in the `dist/` directory.
+Run `ng build last-fm-scrobbles` to build the library. The build artifacts will be stored in the `dist/` directory.
