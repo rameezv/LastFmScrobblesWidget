@@ -1,4 +1,4 @@
-# LastFm Scrobbles Widget
+# Last.fm Scrobbles Widget
 
 A widget to display a Last.fm user's recently scrobbled tracks, as well as the currently playing track if there is one.
 
