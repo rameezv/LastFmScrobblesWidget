@@ -4,7 +4,7 @@ A widget to display a Last.fm user's recently scrobbled tracks, as well as the c
 
 ## Demo
 
-![Screenshot](https://i.imgur.com/ZhHKf78.png)
+![Screenshot](https://i.imgur.com/UoZhZRg.png)
 
 A live demo can be seen on my [personal website](https://rameez.me).
 
