@@ -2,6 +2,12 @@
 
 A widget to display a Last.fm user's recently scrobbled tracks, as well as the currently playing track if there is one.
 
+## Demo
+
+![Screenshot](https://i.imgur.com/ZhHKf78.png)
+
+A live demo can be seen on my [personal website](https://rameez.me).
+
 ## Usage
 
 ### Setup
