@@ -6,5 +6,5 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Development server
 
-To demo the component, run `npm install`, then `ng serve` and navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+To demo the component, start by obtaining a [Last.fm API key](https://www.last.fm/api/account/create), and replace `API_KEY_HERE` with your key. Next, run `npm install`, then `ng serve` and navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
