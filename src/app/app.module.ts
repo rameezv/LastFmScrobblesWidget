@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
-import { LastFmScrobblerModule } from 'projects/last-fm-scrobbles/src/public-api';
+import { LastFmScrobblesModule } from 'projects/last-fm-scrobbles/src/public-api';
 
 @NgModule({
   declarations: [
@@ -10,7 +10,7 @@ import { LastFmScrobblerModule } from 'projects/last-fm-scrobbles/src/public-api
   ],
   imports: [
     BrowserModule,
-    LastFmScrobblerModule
+    LastFmScrobblesModule
   ],
   providers: [],
   bootstrap: [AppComponent]

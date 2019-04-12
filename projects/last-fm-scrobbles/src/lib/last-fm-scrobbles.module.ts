@@ -22,4 +22,4 @@ import { LastFmInternalEqComponent } from './equalizer.component';
   exports: [LastFmScrobblesComponent],
   providers: [LastFmScrobblesService],
 })
-export class LastFmScrobblerModule { }
+export class LastFmScrobblesModule { }
