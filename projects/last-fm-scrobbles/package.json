@@ -1,9 +1,14 @@
 {
   "name": "angular-last-fm-scrobbles",
   "description": "Angular component to display a user's recently scrobbled and currently playing tracks",
-  "keywords": ["last.fm", "music", "angular", "scrobble"],
+  "keywords": [
+    "last.fm",
+    "music",
+    "angular",
+    "scrobble"
+  ],
   "license": "GPL-3.0-only",
-  "version": "0.0.5",
+  "version": "0.1.0",
   "author": {
     "name": "Rameez Virji",
     "email": "rameez@bigtreeworld.com",
