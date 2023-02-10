@@ -11,7 +11,7 @@ A live demo can be seen on my [personal website](https://rameez.me).
 ## Usage
 
 ### Setup
-- If you don't already have it in your project, install @angular/material as per the instructions in [Step 1 of Angular Material Getting Started guide](https://material.angular.io/guide/getting-started#step-1-install-angular-material-angular-cdk-and-angular-animations). 
+- If you don't already have it in your project, install @angular/material as per the instructions in [Step 1 of Angular Material Getting Started guide](https://material.angular.io/guide/getting-started#step-1-install-angular-material-angular-cdk-and-angular-animations).
 - Make sure you have included a material theme (the default indigo-pink one is fine), as well as the material icons webfont, as per the instructions in [Steps 4 and 6 of the Angular Material Getting Started guide](https://material.angular.io/guide/getting-started#step-4-include-a-theme)
 
 ### Using the component
@@ -44,7 +44,7 @@ A live demo can be seen on my [personal website](https://rameez.me).
 
 ## Build
 
-Run `ng build last-fm-scrobbles` to build the project. The build artifacts will be stored in the `dist/` directory.
+Run `ng build last-fm-scrobbles --configuration production` to build the project. The build artifacts will be stored in the `dist/` directory.
 
 ## Publishing
 
