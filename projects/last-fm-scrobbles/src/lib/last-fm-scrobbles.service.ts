@@ -40,7 +40,7 @@ export class LastFmScrobblesService {
     }
     const spotifyLookupUrl =`https://api.spotify.com/v1/search?q=${track.artist['#text']}%20-%20${track.name}&type=track`;
     const headers = {
-      'Authorization': 'Bearer ' + 'BQCaLW0P-EGVM92I8v1c8MdAk7eF_Pm6Og3FCG3JwSMoegSXIZR04dmyvraW0pRmVsKtIRe_OWpL_MDdQCJAD9FiaszbmZTgNTyTIkzBKJiE55W-_vb1',
+      'Authorization': 'Bearer ' + this.authToken,
     }
     return this.http.get(spotifyLookupUrl, {headers}).pipe(
       take(1),
