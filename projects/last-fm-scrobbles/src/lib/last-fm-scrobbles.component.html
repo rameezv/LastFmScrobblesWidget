@@ -14,7 +14,17 @@
       <div class="artist">{{ latestTrack.artist['#text'] }}</div>
       <div class="name">{{ latestTrack.name }}</div>
     </div>
-    <div class="expand"><mat-icon>{{ expandRecent ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}</mat-icon></div>
+    <div class="expand">
+      <ng-container *ngIf="getSpotifyInfoForTrack(latestTrack) | async as spotifyInfo">
+        <button mat-icon-button (click)="playAudio(spotifyInfo.preview_url, $event)">
+          <mat-icon>{{ audioPlaying && (currentAudio === spotifyInfo.preview_url) ? 'pause' : 'play_arrow' }}</mat-icon>
+        </button>
+        <a mat-icon-button (click)="$event.stopPropagation()" [href]="spotifyInfo.external_urls.spotify" target="_blank">
+          <img [src]="spotifyLogo" />
+        </a>
+      </ng-container>
+      <mat-icon>{{ expandRecent ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}</mat-icon>
+    </div>
   </div>
   <ng-container *ngIf="recentlyPlayedTracks$ | async as recentTracks">
     <div [ngClass]="{'visible': (recentTracks.length > 1 && expandRecent)}" class="recently-played">
@@ -28,6 +38,12 @@
         </div>
         <div class="track-info">
           <div class="artist">{{ track.artist['#text'] }}</div> - <div class="name">{{ track.name }}</div>
+        </div>
+        <div class="link" *ngIf="getSpotifyInfoForTrack(track) | async as spotifyInfo">
+          <button mat-icon-button (click)="playAudio(spotifyInfo.preview_url, $event)">
+            <mat-icon>{{ audioPlaying && (currentAudio === spotifyInfo.preview_url) ? 'pause' : 'play_arrow' }}</mat-icon>
+          </button>
+          <a mat-icon-button [href]="spotifyInfo.external_urls.spotify" target="_blank"><img [src]="spotifyLogo" /></a>
         </div>
       </div>
     </div>

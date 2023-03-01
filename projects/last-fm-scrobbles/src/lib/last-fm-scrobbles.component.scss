@@ -84,6 +84,8 @@ h3 {
   }
   .expand {
     margin: 4px 8px 0 0;
+    display: flex;
+    align-items: center;
   }
   &.now-playing {
     .album-art {
@@ -164,6 +166,7 @@ h3 {
       overflow: hidden;
       white-space: nowrap;
       max-width: 100%;
+      flex-grow: 1;
       .artist {
         margin-right: 8px;
         font-weight: 300;
@@ -173,6 +176,13 @@ h3 {
       .name {
         margin-left: 8px;
         font-size: 14px;
+      }
+    }
+    .link {
+      display: flex;
+      a, button {
+        transform: scale(0.8);
+        margin: -10px -5px;
       }
     }
     &:last-child {

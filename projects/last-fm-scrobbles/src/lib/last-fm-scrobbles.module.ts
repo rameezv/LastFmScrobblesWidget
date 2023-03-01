@@ -5,6 +5,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatRippleModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 import { LastFmScrobblesComponent } from './last-fm-scrobbles.component';
 import { LastFmScrobblesService } from './last-fm-scrobbles.service';
 import { LastFmInternalEqComponent } from './equalizer.component';
@@ -18,6 +19,7 @@ import { LastFmInternalEqComponent } from './equalizer.component';
     BrowserAnimationsModule,
     MatRippleModule,
     MatIconModule,
+    MatButtonModule,
     BrowserModule,
     HttpClientModule
   ],
