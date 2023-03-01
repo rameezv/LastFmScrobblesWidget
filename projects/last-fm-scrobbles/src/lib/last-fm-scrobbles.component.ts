@@ -37,16 +37,37 @@ export class LastFmScrobblesComponent implements OnInit {
       map(track => track['@attr'] ? track['@attr'].nowplaying === 'true' : false)
     );
     this.lastFmScrobblesService.init(this.username, this.apiKey, this.spotifyClientId, this.spotifyClientSecret);
+    this.audioPlayer.onended = () => {
+      this.audioPlayer.src = '';
+    }
   }
 
   getSpotifyInfoForTrack(track: LastFmTrack) {
     return this.lastFmScrobblesService.getSpotifyInfo(track);
   }
 
-  playAudio(audioUrl: string) {
-    this.audioPlayer.pause();
-    this.audioPlayer.src = audioUrl;
-    this.audioPlayer.load();
-    this.audioPlayer.play();
+  playAudio(audioUrl: string, event) {
+    if (audioUrl !== this.audioPlayer.src) {
+      this.audioPlayer.pause();
+      this.audioPlayer.src = audioUrl;
+      this.audioPlayer.load();
+      this.audioPlayer.play();
+    } else {
+      if(this.audioPlayer.paused) {
+        this.audioPlayer.play();
+      } else {
+        this.audioPlayer.pause();
+      }
+    }
+    event.stopPropagation();
+    event.preventDefault();
+  }
+
+  get currentAudio() {
+    return this.audioPlayer.src;
+  }
+
+  get audioPlaying() {
+    return !this.audioPlayer.paused;
   }
 }
