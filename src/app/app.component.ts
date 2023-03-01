@@ -6,5 +6,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  apiKey = 'API_KEY_HERE';
+  apiKey = '';
+  spotifyClientId = '';
+  spotifyClientSecret = '';
 }

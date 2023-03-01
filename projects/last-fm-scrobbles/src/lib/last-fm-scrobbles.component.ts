@@ -1,8 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { LastFmScrobblesService } from './last-fm-scrobbles.service';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { LastFmTrack } from './interfaces';
+import { ENCODED_SPOTIFY_LOGO } from './spotify-logo';
 
 @Component({
   selector: 'last-fm-scrobbles',
@@ -12,18 +13,22 @@ import { LastFmTrack } from './interfaces';
 export class LastFmScrobblesComponent implements OnInit {
   @Input() apiKey: string;
   @Input() username: string;
+  @Input() spotifyClientId: string;
+  @Input() spotifyClientSecret: string;
   accentColor = 'rgba(255, 110, 110, 0.15)'; // TODO: turn this into an input
   recentTracks$: Observable<LastFmTrack[]>;
   recentlyPlayedTracks$: Observable<LastFmTrack[]>;
   latestTrack$: Observable<LastFmTrack>;
   isNowPlaying$: Observable<boolean>;
   expandRecent = false;
+  audioPlayer = new Audio();
+  spotifyLogo = ENCODED_SPOTIFY_LOGO;
 
   constructor(private lastFmScrobblesService: LastFmScrobblesService) {}
   ngOnInit(): void {
     this.recentTracks$ = this.lastFmScrobblesService.recentTracks$;
     this.recentlyPlayedTracks$ = this.recentTracks$.pipe(
-      map(tracks => tracks.filter((_, i) => i > 0))
+      map(tracks => tracks.filter((_, i) => i > 0)),
     );
     this.latestTrack$ = this.recentTracks$.pipe(
       map(tracks => tracks ? tracks[0] : null)
@@ -31,6 +36,17 @@ export class LastFmScrobblesComponent implements OnInit {
     this.isNowPlaying$ = this.latestTrack$.pipe(
       map(track => track['@attr'] ? track['@attr'].nowplaying === 'true' : false)
     );
-    this.lastFmScrobblesService.init(this.username, this.apiKey);
+    this.lastFmScrobblesService.init(this.username, this.apiKey, this.spotifyClientId, this.spotifyClientSecret);
+  }
+
+  getSpotifyInfoForTrack(track: LastFmTrack) {
+    return this.lastFmScrobblesService.getSpotifyInfo(track);
+  }
+
+  playAudio(audioUrl: string) {
+    this.audioPlayer.pause();
+    this.audioPlayer.src = audioUrl;
+    this.audioPlayer.load();
+    this.audioPlayer.play();
   }
 }
