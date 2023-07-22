@@ -15,6 +15,7 @@ export class LastFmScrobblesComponent implements OnInit {
   @Input() username: string;
   @Input() spotifyClientId: string;
   @Input() spotifyClientSecret: string;
+  @Input() theme: 'black'|'white' = 'black';
   accentColor = 'rgba(255, 110, 110, 0.15)'; // TODO: turn this into an input
   recentTracks$: Observable<LastFmTrack[]>;
   recentlyPlayedTracks$: Observable<LastFmTrack[]>;
@@ -23,6 +24,10 @@ export class LastFmScrobblesComponent implements OnInit {
   expandRecent = false;
   audioPlayer = new Audio();
   spotifyLogo = ENCODED_SPOTIFY_LOGO;
+
+  get isLightTheme() {
+    return this.theme === 'white';
+  }
 
   constructor(private lastFmScrobblesService: LastFmScrobblesService) {}
   ngOnInit(): void {

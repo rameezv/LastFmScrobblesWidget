@@ -12,7 +12,11 @@
     matRippleColor="rgba(255,0,0,0.1)"
     (click)="expandRecent = !expandRecent"
     class="latest-track"
-    [ngClass]="{ 'now-playing': isNowPlaying$ | async, expanded: expandRecent }"
+    [ngClass]="{
+      'now-playing': isNowPlaying$ | async,
+      expanded: expandRecent,
+      'light-theme': isLightTheme
+    }"
   >
     <last-fm-internal-eq
       [color]="accentColor"
@@ -39,6 +43,7 @@
         *ngIf="getSpotifyInfoForTrack(latestTrack) | async as spotifyInfo"
       >
         <button
+          *ngIf="spotifyInfo.preview_url"
           mat-icon-button
           (click)="playAudio(spotifyInfo.preview_url, $event)"
         >
@@ -64,7 +69,10 @@
   </div>
   <ng-container *ngIf="recentlyPlayedTracks$ | async as recentTracks">
     <div
-      [ngClass]="{ visible: recentTracks.length > 1 && expandRecent }"
+      [ngClass]="{
+        visible: recentTracks.length > 1 && expandRecent,
+        'light-theme': isLightTheme
+      }"
       class="recently-played"
     >
       <h3>Recently Played:</h3>

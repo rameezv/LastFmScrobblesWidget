@@ -1,4 +1,16 @@
-<div>
+<div [ngClass]="{ 'light-theme': theme === 'white' }">
   <h1>Last.fm Scrobbles Widget</h1>
-  <last-fm-scrobbles username="bigtreeworld" [apiKey]="apiKey" [spotifyClientId]="spotifyClientId" [spotifyClientSecret]="spotifyClientSecret"></last-fm-scrobbles>
+  <last-fm-scrobbles
+    username="bigtreeworld"
+    [apiKey]="apiKey"
+    [spotifyClientId]="spotifyClientId"
+    [spotifyClientSecret]="spotifyClientSecret"
+    [theme]="theme"
+  ></last-fm-scrobbles>
+  <button
+    (click)="toggleTheme()"
+    [ngClass]="{ 'light-theme': theme === 'white' }"
+  >
+    Toggle theme
+  </button>
 </div>

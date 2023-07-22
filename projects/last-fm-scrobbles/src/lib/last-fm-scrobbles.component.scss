@@ -1,5 +1,21 @@
 @import './animations';
 
+$dark-foreground-ultra: #ffffff;
+$dark-foreground-max: #eeeeee;
+$dark-background-ultra: #000000;
+$dark-background-max: #1a1a1a;
+$dark-background-med: #222222;
+$dark-background-min: #333333;
+$dark-background-accent: #331a1a;
+
+$light-foreground-ultra: #000000;
+$light-foreground-max: #222222;
+$light-background-ultra: #ffffff;
+$light-background-max: #eeeeee;
+$light-background-med: #cccccc;
+$light-background-min: #aaaaaa;
+$light-background-accent: #eba6a6;
+
 :host {
   display: flex;
   flex-flow: column nowrap;
@@ -17,22 +33,42 @@ h3 {
 }
 
 .latest-track {
-  background-color: #1a1a1a;
-  color: #eeeeee;
+  &.light-theme {
+    background-color: $light-background-max;
+    color: $light-foreground-max;
+    border: 1px solid $light-background-med;
+    &:hover {
+      background-color: $light-background-med;
+    }
+    .album-art {
+      img {
+        border: 2px solid $light-background-min;
+      }
+    }
+    .no-album-art {
+      background-color: $light-background-ultra;
+      border: 2px solid $light-background-min;
+    }
+    &.expanded {
+      background-color: $light-background-accent;
+    }
+  }
+  background-color: $dark-background-max;
+  color: $dark-foreground-max;
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
   padding: 8px;
   border-radius: 40px;
   height: 48px;
-  border: 1px solid #222;
+  border: 1px solid $dark-background-med;
   min-width: 360px;
   position: relative;
   user-select: none;
   cursor: pointer;
   transition: background-color 0.2s ease-in-out;
   &:hover {
-    background-color: #222222;
+    background-color: $dark-background-med;
   }
   @media screen and (max-width: 480px) {
     min-width: 120px;
@@ -51,11 +87,11 @@ h3 {
       height: 48px;
       width: 48px;
       border-radius: 48px;
-      border: 2px solid #333333;
+      border: 2px solid $dark-background-min;
     }
     .no-album-art {
-      background-color: #000000;
-      border: 2px solid #333333;
+      background-color: $dark-background-ultra;
+      border: 2px solid $dark-background-min;
       height: 48px;
       width: 48px;
       border-radius: 48px;
@@ -129,11 +165,35 @@ h3 {
     }
   }
   &.expanded {
-    background-color: #331a1a;
+    background-color: $dark-background-accent;
   }
 }
 
 .recently-played {
+  &.light-theme {
+    color: $light-foreground-ultra;
+    .recent-track {
+      background-color: $light-background-max;
+      &:hover {
+        background-color: $light-background-med;
+      }
+      .album-art {
+        img, .no-album-art {
+          border: 1px solid $light-background-ultra;
+        }
+        .no-album-art {
+          background-color: $light-background-ultra;
+          border: 1px solid $light-background-ultra;
+        }
+      }
+      &:last-child {
+        &:after {
+          background: $light-background-ultra;
+          background: linear-gradient(0deg, rgba($light-background-ultra, 1) 0%,  rgba($light-background-ultra, 0.7) 20%, rgba($light-background-ultra, 0) 100%);
+        }
+      }
+    }
+  }
   height: 0;
   max-height: 0;
   opacity: 0;
@@ -146,7 +206,7 @@ h3 {
   border-top-right-radius: 0;
   width: calc(100% - 32px);
   transition: max-height 0.2s ease-in-out, height 0.2s ease-in-out, opacity 0.1s ease-in-out;
-  color: #ffffff;
+  color: $dark-foreground-ultra;
   &.visible {
     height: 100%;
     max-height: 500px;
@@ -162,14 +222,14 @@ h3 {
     flex-flow: row nowrap;
     margin: 8px;
     padding: 4px;
-    background-color: #1a1a1a;
+    background-color: $dark-background-max;
     border-radius: 24px;
     height: 24px;
     width: 100%;
     cursor: default;
     transition: background-color 0.2s ease-in-out;
     &:hover {
-      background-color: #222222;
+      background-color: $dark-background-med;
     }
     .album-art {
       margin-right: 16px;
@@ -177,11 +237,11 @@ h3 {
         width: 24px;
         height: 24px;
         border-radius: 24px;
-        border: 1px solid #000000;
+        border: 1px solid $dark-background-ultra;
       }
       .no-album-art {
-        background-color: #000000;
-        border: 1px solid #000000;
+        background-color: $dark-background-ultra;
+        border: 1px solid $dark-background-ultra;
         border-radius: 24px;
         mat-icon {
           color: #ff0000;
@@ -235,8 +295,8 @@ h3 {
         bottom: 0;
         left: 0;
         content: '';
-        background: rgb(0,0,0);
-        background: linear-gradient(0deg, rgba(0,0,0,1) 0%,  rgba(0,0,0,0.7) 20%, rgba(0,0,0,0) 100%);
+        background: $dark-background-ultra;
+        background: linear-gradient(0deg, rgba($dark-background-ultra, 1) 0%,  rgba($dark-background-ultra, 0.7) 20%, rgba($dark-background-ultra, 0) 100%);
       }
     }
   }

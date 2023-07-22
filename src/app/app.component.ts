@@ -10,4 +10,13 @@ export class AppComponent {
   apiKey = apiKey;
   spotifyClientSecret = spotifyClientSecret;
   spotifyClientId = spotifyClientId;
+  theme: 'white'|'black' = 'black';
+
+  toggleTheme() {
+    if (this.theme === 'white') {
+      this.theme = 'black';
+    } else {
+      this.theme = 'white';
+    }
+  }
 }

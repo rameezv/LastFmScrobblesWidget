@@ -1,14 +1,40 @@
-  div {
+div {
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
   justify-content: center;
   height: 100%;
   width: 100%;
+  &.light-theme {
+    background: #ffffff;
+    color: #222222;
+  }
 }
 
 last-fm-scrobbles {
   width: 420px;
   max-width: 100%;
+  overflow: hidden;
+}
+
+button {
+  background-color: #000000;
+  border: 2px solid #333333;
+  color: #ffffff;
+  padding: 8px 12px;
+  border-radius: 24px;
+  text-transform: uppercase;
+  font-weight: 16px;
+  &:hover {
+    background-color: #333333;
+  }
+  &.light-theme {
+    background-color: #ffffff;
+    border: 2px solid #cccccc;
+    color: #000000;
+    &:hover {
+      background-color: #cccccc;
+    }
+  }
 }
 
