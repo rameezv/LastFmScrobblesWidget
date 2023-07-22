@@ -71,6 +71,10 @@ h3 {
   .track-info {
     width: calc(100% - 120px);
     flex-grow: 1;
+    @media screen and (max-width: 480px) {
+      width: calc(100% - 140px);
+      margin-right: 6px;
+    }
     .artist {
       font-weight: 300;
       text-transform: uppercase;
@@ -193,7 +197,6 @@ h3 {
       align-items: center;
       font-size: 10px;
       overflow: hidden;
-      white-space: nowrap;
       max-width: 100%;
       flex-grow: 1;
       .artist {
@@ -201,10 +204,14 @@ h3 {
         font-weight: 300;
         text-transform: uppercase;
         font-size: 12px;
+        white-space: nowrap;
       }
       .name {
         margin-left: 8px;
         font-size: 14px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
       }
     }
     .link {

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { apiKey, spotifyClientId, spotifyClientSecret } from 'src/api_keys';
 
 @Component({
   selector: 'app-root',
@@ -6,7 +7,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  apiKey = '';
-  spotifyClientId = '';
-  spotifyClientSecret = '';
+  apiKey = apiKey;
+  spotifyClientSecret = spotifyClientSecret;
+  spotifyClientId = spotifyClientId;
 }
