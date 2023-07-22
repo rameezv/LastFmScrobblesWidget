@@ -8,7 +8,7 @@
     "scrobble"
   ],
   "license": "GPL-3.0-only",
-  "version": "8.2.0",
+  "version": "8.2.1",
   "author": {
     "name": "Rameez Virji",
     "email": "rameez@bigtreeworld.com",
@@ -17,10 +17,10 @@
   "homepage": "https://github.com/rameezv/LastFmScrobblesWidget",
   "peerDependencies": {
     "@angular/animations": "^15.1.4",
-    "@angular/cdk": "~15.1.4",
-    "@angular/common": "~15.1.4",
-    "@angular/core": "~15.1.4",
+    "@angular/cdk": "^15.1.4",
+    "@angular/common": "^15.1.4",
+    "@angular/core": "^15.1.4",
     "tslib": "^2.0.0",
-    "@angular/material": "~15.1.4"
+    "@angular/material": "^15.1.4"
   }
 }
