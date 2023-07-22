@@ -93,6 +93,7 @@
           <button
             mat-icon-button
             (click)="playAudio(spotifyInfo.preview_url, $event)"
+            *ngIf="!!spotifyInfo.preview_url"
           >
             <mat-icon>{{
               audioPlaying && currentAudio === spotifyInfo.preview_url
