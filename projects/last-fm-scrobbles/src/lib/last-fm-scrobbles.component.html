@@ -15,7 +15,8 @@
     [ngClass]="{
       'now-playing': isNowPlaying$ | async,
       expanded: expandRecent,
-      'light-theme': isLightTheme
+      'white-theme': theme === 'white',
+      'black-theme': theme === 'black'
     }"
   >
     <last-fm-internal-eq
@@ -71,7 +72,8 @@
     <div
       [ngClass]="{
         visible: recentTracks.length > 1 && expandRecent,
-        'light-theme': isLightTheme
+        'white-theme': theme === 'white',
+        'black-theme': theme === 'black'
       }"
       class="recently-played"
     >

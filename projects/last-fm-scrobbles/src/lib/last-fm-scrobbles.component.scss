@@ -1,74 +1,146 @@
 @import './animations';
 
-$dark-foreground-ultra: #ffffff;
-$dark-foreground-max: #eeeeee;
-$dark-background-ultra: #000000;
-$dark-background-max: #1a1a1a;
-$dark-background-med: #222222;
-$dark-background-min: #333333;
-$dark-background-accent: #331a1a;
+$black-foreground-ultra: #ffffff;
+$black-foreground-max: #eeeeee;
+$black-background-ultra: #000000;
+$black-background-max: #1a1a1a;
+$black-background-med: #222222;
+$black-background-min: #333333;
+$black-background-accent: #331a1a;
 
-$light-foreground-ultra: #000000;
-$light-foreground-max: #222222;
-$light-background-ultra: #ffffff;
-$light-background-max: #eeeeee;
-$light-background-med: #cccccc;
-$light-background-min: #aaaaaa;
-$light-background-accent: #eba6a6;
+$white-foreground-ultra: #000000;
+$white-foreground-max: #222222;
+$white-background-ultra: #ffffff;
+$white-background-max: #eeeeee;
+$white-background-med: #cccccc;
+$white-background-min: #aaaaaa;
+$white-background-accent: #eba6a6;
 
-:host {
-  display: flex;
-  flex-flow: column nowrap;
-}
-
-h3 {
-  margin: 4px 36px;
-  font-size: 16px;
-  font-weight: 500;
-  mat-icon {
-    font-size: 12px;
-    height: 12px;
-    width: 16px;
+@mixin color-theme-recently-played($foreground-ultra, $foreground-max, $background-ultra, $background-max, $background-med, $background-min, $background-accent) {
+  height: 0;
+  max-height: 0;
+  opacity: 0;
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+  user-select: none;
+  border-radius: 24px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  width: calc(100% - 32px);
+  transition: max-height 0.2s ease-in-out, height 0.2s ease-in-out, opacity 0.1s ease-in-out;
+  color: $foreground-ultra;
+  &.visible {
+    height: 100%;
+    max-height: 500px;
+    opacity: 1;
+    transition: max-height 0.2s ease-in-out, height 0.2s ease-in-out, opacity 0.5s ease-in-out;
   }
-}
-
-.latest-track {
-  &.light-theme {
-    background-color: $light-background-max;
-    color: $light-foreground-max;
-    border: 1px solid $light-background-med;
+  h3 {
+    font-weight: 400;
+    font-size: 14px;
+  }
+  .recent-track {
+    display: flex;
+    flex-flow: row nowrap;
+    margin: 8px;
+    padding: 4px;
+    background-color: $background-max;
+    border-radius: 24px;
+    height: 24px;
+    width: 100%;
+    cursor: default;
+    transition: background-color 0.2s ease-in-out;
     &:hover {
-      background-color: $light-background-med;
+      background-color: $background-med;
     }
     .album-art {
-      img {
-        border: 2px solid $light-background-min;
+      margin-right: 16px;
+      img, .no-album-art {
+        width: 24px;
+        height: 24px;
+        border-radius: 24px;
+        border: 1px solid $background-ultra;
+      }
+      .no-album-art {
+        background-color: $background-ultra;
+        border: 1px solid $background-ultra;
+        border-radius: 24px;
+        mat-icon {
+          color: #ff0000;
+          font-size: 20px;
+          height: 20px;
+          width: 20px;
+          margin: 2px;
+        }
       }
     }
-    .no-album-art {
-      background-color: $light-background-ultra;
-      border: 2px solid $light-background-min;
+    .track-info {
+      display: flex;
+      align-items: center;
+      font-size: 10px;
+      overflow: hidden;
+      max-width: 100%;
+      flex-grow: 1;
+      .artist {
+        margin-right: 8px;
+        font-weight: 300;
+        text-transform: uppercase;
+        font-size: 12px;
+        white-space: nowrap;
+      }
+      .name {
+        margin-left: 8px;
+        font-size: 14px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+      }
     }
-    &.expanded {
-      background-color: $light-background-accent;
+    .link {
+      display: flex;
+      a, button {
+        transform: scale(0.8);
+        margin: -10px -5px;
+        @media screen and (max-width: 480px) {
+          margin: -10px -12px;
+        }
+      }
+    }
+    &:last-child {
+      position: relative;
+      &:after {
+        pointer-events: none;
+        display: block;
+        position: absolute;
+        width: 100%;
+        height: 500%;
+        bottom: 0;
+        left: 0;
+        content: '';
+        background: $background-ultra;
+        background: linear-gradient(0deg, rgba($background-ultra, 1) 0%,  rgba($background-ultra, 0.7) 20%, rgba($background-ultra, 0) 100%);
+      }
     }
   }
-  background-color: $dark-background-max;
-  color: $dark-foreground-max;
+}
+@mixin color-theme-latest-track($foreground-ultra, $foreground-max, $background-ultra, $background-max, $background-med, $background-min, $background-accent) {
+  background-color: $background-max;
+  color: $foreground-max;
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
   padding: 8px;
   border-radius: 40px;
   height: 48px;
-  border: 1px solid $dark-background-med;
+  border: 1px solid $background-med;
   min-width: 360px;
   position: relative;
   user-select: none;
   cursor: pointer;
   transition: background-color 0.2s ease-in-out;
   &:hover {
-    background-color: $dark-background-med;
+    background-color: $background-med;
   }
   @media screen and (max-width: 480px) {
     min-width: 120px;
@@ -87,11 +159,11 @@ h3 {
       height: 48px;
       width: 48px;
       border-radius: 48px;
-      border: 2px solid $dark-background-min;
+      border: 2px solid $background-min;
     }
     .no-album-art {
-      background-color: $dark-background-ultra;
-      border: 2px solid $dark-background-min;
+      background-color: $background-ultra;
+      border: 2px solid $background-min;
       height: 48px;
       width: 48px;
       border-radius: 48px;
@@ -160,144 +232,45 @@ h3 {
     .album-art {
       img, .no-album-art {
         -webkit-animation: heartbeat 1000ms ease-in-out infinite both;
-	      animation: heartbeat 1000ms ease-in-out infinite both;
+        animation: heartbeat 1000ms ease-in-out infinite both;
       }
     }
   }
   &.expanded {
-    background-color: $dark-background-accent;
+    background-color: $background-accent;
+  }
+}
+
+:host {
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+h3 {
+  margin: 4px 36px;
+  font-size: 16px;
+  font-weight: 500;
+  mat-icon {
+    font-size: 12px;
+    height: 12px;
+    width: 16px;
+  }
+}
+
+.latest-track {
+  &.black-theme {
+    @include color-theme-latest-track($black-foreground-ultra,$black-foreground-max,$black-background-ultra,$black-background-max,$black-background-med,$black-background-min,$black-background-accent);
+  }
+  &.white-theme {
+    @include color-theme-latest-track($white-foreground-ultra,$white-foreground-max,$white-background-ultra,$white-background-max,$white-background-med,$white-background-min,$white-background-accent);
   }
 }
 
 .recently-played {
-  &.light-theme {
-    color: $light-foreground-ultra;
-    .recent-track {
-      background-color: $light-background-max;
-      &:hover {
-        background-color: $light-background-med;
-      }
-      .album-art {
-        img, .no-album-art {
-          border: 1px solid $light-background-ultra;
-        }
-        .no-album-art {
-          background-color: $light-background-ultra;
-          border: 1px solid $light-background-ultra;
-        }
-      }
-      &:last-child {
-        &:after {
-          background: $light-background-ultra;
-          background: linear-gradient(0deg, rgba($light-background-ultra, 1) 0%,  rgba($light-background-ultra, 0.7) 20%, rgba($light-background-ultra, 0) 100%);
-        }
-      }
-    }
+  &.black-theme {
+    @include color-theme-recently-played($black-foreground-ultra,$black-foreground-max,$black-background-ultra,$black-background-max,$black-background-med,$black-background-min,$black-background-accent);
   }
-  height: 0;
-  max-height: 0;
-  opacity: 0;
-  width: 100%;
-  padding: 8px;
-  box-sizing: border-box;
-  user-select: none;
-  border-radius: 24px;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
-  width: calc(100% - 32px);
-  transition: max-height 0.2s ease-in-out, height 0.2s ease-in-out, opacity 0.1s ease-in-out;
-  color: $dark-foreground-ultra;
-  &.visible {
-    height: 100%;
-    max-height: 500px;
-    opacity: 1;
-    transition: max-height 0.2s ease-in-out, height 0.2s ease-in-out, opacity 0.5s ease-in-out;
-  }
-  h3 {
-    font-weight: 400;
-    font-size: 14px;
-  }
-  .recent-track {
-    display: flex;
-    flex-flow: row nowrap;
-    margin: 8px;
-    padding: 4px;
-    background-color: $dark-background-max;
-    border-radius: 24px;
-    height: 24px;
-    width: 100%;
-    cursor: default;
-    transition: background-color 0.2s ease-in-out;
-    &:hover {
-      background-color: $dark-background-med;
-    }
-    .album-art {
-      margin-right: 16px;
-      img, .no-album-art {
-        width: 24px;
-        height: 24px;
-        border-radius: 24px;
-        border: 1px solid $dark-background-ultra;
-      }
-      .no-album-art {
-        background-color: $dark-background-ultra;
-        border: 1px solid $dark-background-ultra;
-        border-radius: 24px;
-        mat-icon {
-          color: #ff0000;
-          font-size: 20px;
-          height: 20px;
-          width: 20px;
-          margin: 2px;
-        }
-      }
-    }
-    .track-info {
-      display: flex;
-      align-items: center;
-      font-size: 10px;
-      overflow: hidden;
-      max-width: 100%;
-      flex-grow: 1;
-      .artist {
-        margin-right: 8px;
-        font-weight: 300;
-        text-transform: uppercase;
-        font-size: 12px;
-        white-space: nowrap;
-      }
-      .name {
-        margin-left: 8px;
-        font-size: 14px;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
-      }
-    }
-    .link {
-      display: flex;
-      a, button {
-        transform: scale(0.8);
-        margin: -10px -5px;
-        @media screen and (max-width: 480px) {
-          margin: -10px -12px;
-        }
-      }
-    }
-    &:last-child {
-      position: relative;
-      &:after {
-        pointer-events: none;
-        display: block;
-        position: absolute;
-        width: 100%;
-        height: 500%;
-        bottom: 0;
-        left: 0;
-        content: '';
-        background: $dark-background-ultra;
-        background: linear-gradient(0deg, rgba($dark-background-ultra, 1) 0%,  rgba($dark-background-ultra, 0.7) 20%, rgba($dark-background-ultra, 0) 100%);
-      }
-    }
+  &.white-theme {
+    @include color-theme-recently-played($white-foreground-ultra,$white-foreground-max,$white-background-ultra,$white-background-max,$white-background-med,$white-background-min,$white-background-accent);
   }
 }
