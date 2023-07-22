@@ -34,12 +34,19 @@ h3 {
   &:hover {
     background-color: #222222;
   }
+  @media screen and (max-width: 480px) {
+    min-width: 120px;
+  }
   last-fm-internal-eq {
     position: absolute;
     bottom: 16px;
   }
   .album-art {
     margin-right: 16px;
+    @media screen and (max-width: 480px) {
+      transform: scale(0.75);
+      margin: 0 0 0 -8px;
+    }
     img {
       height: 48px;
       width: 48px;
@@ -72,6 +79,10 @@ h3 {
       overflow: hidden;
       white-space: nowrap;
       max-width: calc(100% - 40px);
+      @media screen and (max-width: 480px) {
+        font-size: 12px;
+        max-width: 100%;
+      }
     }
     .name {
       font-weight: 600;
@@ -80,12 +91,30 @@ h3 {
       overflow: hidden;
       white-space: nowrap;
       max-width: calc(100% - 40px);
+      @media screen and (max-width: 480px) {
+        font-size: 14px;
+        max-width: 100%;
+      }
     }
   }
-  .expand {
+  .actions {
     margin: 4px 8px 0 0;
     display: flex;
     align-items: center;
+    @media screen and (max-width: 480px) {
+      margin: 4px 8px 0 -10px;
+    }
+    button, a {
+      @media screen and (max-width: 480px) {
+        transform: scale(0.85);
+        padding: 0;
+        width: 24px;
+        height: 24px;
+      }
+    }
+    .expand-icon {
+      margin-left: 4px;
+    }
   }
   &.now-playing {
     .album-art {
@@ -183,6 +212,9 @@ h3 {
       a, button {
         transform: scale(0.8);
         margin: -10px -5px;
+        @media screen and (max-width: 480px) {
+          margin: -10px -12px;
+        }
       }
     }
     &:last-child {
