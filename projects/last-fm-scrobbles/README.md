@@ -29,8 +29,10 @@ A live demo can be seen on my [personal website](https://rameez.me).
     - `username`: a `string` containing the user's last.fm username
     - `apiKey`: a `string` containing your Last.fm API Key. If you don't have one yet, visit the [Last.fm API account creation page](https://www.last.fm/api/account/create) and get one. It's really fast and simple.
   - Both of these inputs are required for the widget to work correctly.
-  - There is an option input `accentColor` which takes a color in _hex_ form. This is used for backgrounds/highlights and the equalizer. Defaults to `'#FF6E6E'`.
-  - There is also another optional input `theme` which can be set to either `'black'` (default) or `'white'` which will change the widgets colour scheme and background colour.
+  - Theming: the following optional inputs allow for theming the widget:
+    - `accentColor` takes a color in _hex_ form. This is used for backgrounds/highlights and the equalizer. Defaults to `'#FF6E6E'`.
+    - `theme` can be set to either `'black'` (default) or `'white'` which will change the widget colour scheme.
+    - `backgroundColor` takes a color in _hex_ form. Set this to a custom colour if this widget is beign used on a background that is not #000000 for the `black` theme and #ffffff for the `white` theme.
 
 - A sans-serif font style is recommended
 
@@ -40,7 +42,6 @@ A live demo can be seen on my [personal website](https://rameez.me).
 - Music streaming links for tracks
 - Configurable number of tracks
 - Configurable refresh rate
-- Custom background color
 - Deduping tracks (especially the most recent track)
 - _Your feature here_ - if you have any ideas, please feel free to contribute or make a feature request by opening an issue on GitHub
 

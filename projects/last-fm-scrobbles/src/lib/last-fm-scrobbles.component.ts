@@ -18,6 +18,27 @@ function hexToRgba(hexCode: string, opacity: number){
   throw new Error('Bad Hex');
 }
 
+function blendColours(baseColor: string, colorToMix: string, opacity: number) {
+  const baseNum = parseInt(baseColor.replace("#",""),16);
+  let rBase = (baseNum >> 16);
+  let gBase = (baseNum >> 8 & 0x00FF);
+  let bBase = (baseNum & 0x0000FF);
+  const mixNum = parseInt(colorToMix.replace("#",""),16);
+  let rMix = (mixNum >> 16);
+  let gMix = (mixNum >> 8 & 0x00FF);
+  let bMix = (mixNum & 0x0000FF);
+
+  const rDiff = Math.abs(rBase - rMix);
+  const gDiff = Math.abs(gBase - gMix);
+  const bDiff = Math.abs(bBase - bMix);
+
+  const rNew = rBase + Math.floor(rDiff*(opacity*2.55/100));
+  const gNew = gBase + Math.floor(gDiff*(opacity*2.55/100));
+  const bNew = bBase + Math.floor(bDiff*(opacity*2.55/100));
+
+  return "#" + (0x1000000 + (rNew<255?rNew<1?0:rNew:255)*0x10000 + (gNew<255?gNew<1?0:gNew:255)*0x100 + (bNew<255?bNew<1?0:bNew:255)).toString(16).slice(1);
+}
+
 @Component({
   selector: 'last-fm-scrobbles',
   templateUrl: './last-fm-scrobbles.component.html',
@@ -30,6 +51,7 @@ export class LastFmScrobblesComponent implements OnInit {
   @Input() spotifyClientSecret: string;
   @Input() theme: 'black'|'white' = 'black';
   @Input() accentColor: string = '#FF6E6E';
+  @Input() backgroundColor?: string;
   recentTracks$: Observable<LastFmTrack[]>;
   recentlyPlayedTracks$: Observable<LastFmTrack[]>;
   latestTrack$: Observable<LastFmTrack>;
@@ -48,6 +70,25 @@ export class LastFmScrobblesComponent implements OnInit {
 
   get brightAccentColor() {
     return hexToRgba(this.accentColor, 35);
+  }
+
+
+  get bgColor() {
+    if (this.backgroundColor) {
+      return this.backgroundColor;
+    }
+    if (this.theme === 'white') {
+      return '#ffffff'
+    }
+    return '#000000';
+  }
+
+  get accentBackground() {
+    return blendColours(this.bgColor, this.accentColor, 15);
+  }
+
+  get bgGradient() {
+    return `linear-gradient(0deg, ${hexToRgba(this.bgColor, 100)} 0%,  ${hexToRgba(this.bgColor, 70)} 25%, ${hexToRgba(this.bgColor, 0)} 100%)`
   }
 
   constructor(private lastFmScrobblesService: LastFmScrobblesService) {}

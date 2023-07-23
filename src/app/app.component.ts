@@ -11,6 +11,14 @@ export class AppComponent {
   spotifyClientSecret = spotifyClientSecret;
   spotifyClientId = spotifyClientId;
   theme: 'white'|'black' = 'black';
+  backgroundColor = '#000000';
+  accentColor = '#BF40BF';
+  customColor?: string;
+
+  get bgColor() {
+    if (this.customColor) return this.customColor;
+    return this.theme === 'black' ? '#000000' : '#ffffff';
+  }
 
   toggleTheme() {
     if (this.theme === 'white') {

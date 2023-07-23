@@ -18,7 +18,7 @@
       'white-theme': theme === 'white',
       'black-theme': theme === 'black'
     }"
-    [style.background-color]="expandRecent ? medAccentColor : null"
+    [style.background-color]="expandRecent ? accentBackground : null"
   >
     <last-fm-internal-eq
       [color]="medAccentColor"
@@ -120,7 +120,11 @@
           /></a>
         </div>
       </div>
-      <div class="gradient-overlay"></div>
+      <div
+        class="gradient-overlay"
+        [style.background]="bgColor"
+        [style.background]="bgGradient"
+      ></div>
     </div>
   </ng-container>
 </ng-container>

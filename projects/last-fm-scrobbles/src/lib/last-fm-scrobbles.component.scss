@@ -116,12 +116,10 @@ $white-background-accent: #eba6a6;
     pointer-events: none;
     display: block;
     position: absolute;
-    width: 120%;
-    height: 50%;
+    width: calc(100% + 16px);;
+    height: 80%;
     bottom: 0;
     left: 0;
-    background: $background-ultra;
-    background: linear-gradient(0deg, rgba($background-ultra, 1) 0%,  rgba($background-ultra, 0.7) 25%, rgba($background-ultra, 0) 100%);
   }
 }
 @mixin color-theme-latest-track($foreground-ultra, $foreground-max, $background-ultra, $background-max, $background-med, $background-min, $background-accent) {

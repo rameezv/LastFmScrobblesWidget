@@ -1,4 +1,7 @@
-<div [ngClass]="{ 'light-theme': theme === 'white' }">
+<div
+  [ngClass]="{ 'light-theme': theme === 'white' }"
+  [style.background-color]="bgColor"
+>
   <h1>Last.fm Scrobbles Widget</h1>
   <last-fm-scrobbles
     username="bigtreeworld"
@@ -6,7 +9,8 @@
     [spotifyClientId]="spotifyClientId"
     [spotifyClientSecret]="spotifyClientSecret"
     [theme]="theme"
-    accentColor="#BF40BF"
+    [accentColor]="accentColor"
+    [backgroundColor]="bgColor"
   ></last-fm-scrobbles>
   <button
     (click)="toggleTheme()"
@@ -14,4 +18,41 @@
   >
     Toggle theme
   </button>
+  <div
+    [style.maxHeight]="'200px'"
+    [style.display]="'flex'"
+    [style.padding]="'8px'"
+  >
+    Colour Scheme:
+    <div
+      [style.display]="'flex'"
+      [style.flexFlow]="'row nowrap'"
+      [style.height]="'4rem'"
+    >
+      <button
+        (click)="this.customColor = '#000000'; this.accentColor = '#cccccc'"
+        [style.color]="'#ffffff'"
+      >
+        onyx
+      </button>
+      <button
+        (click)="this.customColor = '#571d0b'; this.accentColor = '#E97451'"
+        [style.color]="'#E97451'"
+      >
+        sienna
+      </button>
+      <button
+        (click)="this.customColor = '#194f2b'; this.accentColor = '#50C878'"
+        [style.color]="'#50C878'"
+      >
+        emerald
+      </button>
+      <button
+        (click)="this.customColor = '#0d1e51'; this.accentColor = '#4169E1'"
+        [style.color]="'#4169E1'"
+      >
+        royal
+      </button>
+    </div>
+  </div>
 </div>
