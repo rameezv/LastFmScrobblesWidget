@@ -23,12 +23,13 @@ A live demo can be seen on my [personal website](https://rameez.me).
 
 - Add the `last-fm-scrobbles` component to your template:
 
-  `<last-fm-scrobbles username="bigtreeworld" [apiKey]="lastFmApiKey" theme="white"></last-fm-scrobbles>`
+  `<last-fm-scrobbles username="bigtreeworld" [apiKey]="lastFmApiKey" theme="white" accentColor="BF40BFBF40BF"></last-fm-scrobbles>`
 
   - The component takes 2 inputs:
     - `username`: a `string` containing the user's last.fm username
     - `apiKey`: a `string` containing your Last.fm API Key. If you don't have one yet, visit the [Last.fm API account creation page](https://www.last.fm/api/account/create) and get one. It's really fast and simple.
   - Both of these inputs are required for the widget to work correctly.
+  - There is an option input `accentColor` which takes a color in _hex_ form. This is used for backgrounds/highlights and the equalizer. Defaults to `'#FF6E6E'`.
   - There is also another optional input `theme` which can be set to either `'black'` (default) or `'white'` which will change the widgets colour scheme and background colour.
 
 - A sans-serif font style is recommended
@@ -36,7 +37,6 @@ A live demo can be seen on my [personal website](https://rameez.me).
 ## Upcoming additions:
 
 - Tests
-- Change accent color
 - Music streaming links for tracks
 - Configurable number of tracks
 - Configurable refresh rate

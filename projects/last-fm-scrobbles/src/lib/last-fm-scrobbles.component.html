@@ -9,7 +9,7 @@
   </h3>
   <div
     matRipple
-    matRippleColor="rgba(255,0,0,0.1)"
+    [matRippleColor]="medAccentColor"
     (click)="expandRecent = !expandRecent"
     class="latest-track"
     [ngClass]="{
@@ -18,9 +18,10 @@
       'white-theme': theme === 'white',
       'black-theme': theme === 'black'
     }"
+    [style.background-color]="expandRecent ? medAccentColor : null"
   >
     <last-fm-internal-eq
-      [color]="accentColor"
+      [color]="medAccentColor"
       *ngIf="isNowPlaying$ | async"
     ></last-fm-internal-eq>
     <div class="album-art">
@@ -119,6 +120,7 @@
           /></a>
         </div>
       </div>
+      <div class="gradient-overlay"></div>
     </div>
   </ng-container>
 </ng-container>
