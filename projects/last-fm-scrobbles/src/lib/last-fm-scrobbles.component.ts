@@ -28,13 +28,18 @@ function blendColours(baseColor: string, colorToMix: string, opacity: number) {
   let gMix = (mixNum >> 8 & 0x00FF);
   let bMix = (mixNum & 0x0000FF);
 
-  const rDiff = Math.abs(rBase - rMix);
-  const gDiff = Math.abs(gBase - gMix);
-  const bDiff = Math.abs(bBase - bMix);
+  const rDiff = rBase - rMix;
+  const gDiff = gBase - gMix;
+  const bDiff = bBase - bMix;
 
-  const rNew = rBase + Math.floor(rDiff*(opacity*2.55/100));
-  const gNew = gBase + Math.floor(gDiff*(opacity*2.55/100));
-  const bNew = bBase + Math.floor(bDiff*(opacity*2.55/100));
+  const rNew = rBase - Math.floor(rDiff*(opacity*2.55/100));
+  const gNew = gBase - Math.floor(gDiff*(opacity*2.55/100));
+  const bNew = bBase - Math.floor(bDiff*(opacity*2.55/100));
+
+  console.log(rBase, gBase, bBase);
+  console.log(rMix, gMix, bMix);
+  console.log(rDiff, gDiff, bDiff);
+  console.log(rNew, gNew, bNew);
 
   return "#" + (0x1000000 + (rNew<255?rNew<1?0:rNew:255)*0x10000 + (gNew<255?gNew<1?0:gNew:255)*0x100 + (bNew<255?bNew<1?0:bNew:255)).toString(16).slice(1);
 }
