@@ -25,10 +25,14 @@ A live demo can be seen on my [personal website](https://rameez.me).
 
   `<last-fm-scrobbles username="bigtreeworld" [apiKey]="lastFmApiKey" theme="white" accentColor="BF40BFBF40BF"></last-fm-scrobbles>`
 
-  - The component takes 2 inputs:
+  - The component has 2 required inputs:
     - `username`: a `string` containing the user's last.fm username
     - `apiKey`: a `string` containing your Last.fm API Key. If you don't have one yet, visit the [Last.fm API account creation page](https://www.last.fm/api/account/create) and get one. It's really fast and simple.
-  - Both of these inputs are required for the widget to work correctly.
+  - Spotify integration can be enabled by passing values into the following inputs:
+    - `spotifyClientId`: a `string` with your client ID
+    - `spotifyClientSecret`: `string` with your client secret
+    - Visit https://developer.spotify.com/dashboard to get your own client id and secret
+    - This will enable preview clips and Spotify links
   - Theming: the following optional inputs allow for theming the widget:
     - `accentColor` takes a color in _hex_ form. This is used for backgrounds/highlights and the equalizer. Defaults to `'#FF6E6E'`.
     - `theme` can be set to either `'black'` (default) or `'white'` which will change the widget colour scheme.

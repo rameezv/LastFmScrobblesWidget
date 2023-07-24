@@ -6,7 +6,6 @@ $black-background-ultra: #000000;
 $black-background-max: #1a1a1a;
 $black-background-med: #222222;
 $black-background-min: #333333;
-$black-background-accent: #331a1a;
 
 $white-foreground-ultra: #000000;
 $white-foreground-max: #222222;
@@ -14,9 +13,8 @@ $white-background-ultra: #ffffff;
 $white-background-max: #eeeeee;
 $white-background-med: #cccccc;
 $white-background-min: #aaaaaa;
-$white-background-accent: #eba6a6;
 
-@mixin color-theme-recently-played($foreground-ultra, $foreground-max, $background-ultra, $background-max, $background-med, $background-min, $background-accent) {
+@mixin color-theme-recently-played($foreground-ultra, $foreground-max, $background-ultra, $background-max, $background-med, $background-min) {
   height: 0;
   max-height: 0;
   opacity: 0;
@@ -122,7 +120,7 @@ $white-background-accent: #eba6a6;
     left: 0;
   }
 }
-@mixin color-theme-latest-track($foreground-ultra, $foreground-max, $background-ultra, $background-max, $background-med, $background-min, $background-accent) {
+@mixin color-theme-latest-track($foreground-ultra, $foreground-max, $background-ultra, $background-max, $background-med, $background-min) {
   background-color: $background-max;
   color: $foreground-max;
   display: flex;
@@ -254,18 +252,18 @@ h3 {
 
 .latest-track {
   &.black-theme {
-    @include color-theme-latest-track($black-foreground-ultra,$black-foreground-max,$black-background-ultra,$black-background-max,$black-background-med,$black-background-min,$black-background-accent);
+    @include color-theme-latest-track($black-foreground-ultra,$black-foreground-max,$black-background-ultra,$black-background-max,$black-background-med,$black-background-min);
   }
   &.white-theme {
-    @include color-theme-latest-track($white-foreground-ultra,$white-foreground-max,$white-background-ultra,$white-background-max,$white-background-med,$white-background-min,$white-background-accent);
+    @include color-theme-latest-track($white-foreground-ultra,$white-foreground-max,$white-background-ultra,$white-background-max,$white-background-med,$white-background-min);
   }
 }
 
 .recently-played {
   &.black-theme {
-    @include color-theme-recently-played($black-foreground-ultra,$black-foreground-max,$black-background-ultra,$black-background-max,$black-background-med,$black-background-min,$black-background-accent);
+    @include color-theme-recently-played($black-foreground-ultra,$black-foreground-max,$black-background-ultra,$black-background-max,$black-background-med,$black-background-min);
   }
   &.white-theme {
-    @include color-theme-recently-played($white-foreground-ultra,$white-foreground-max,$white-background-ultra,$white-background-max,$white-background-med,$white-background-min,$white-background-accent);
+    @include color-theme-recently-played($white-foreground-ultra,$white-foreground-max,$white-background-ultra,$white-background-max,$white-background-med,$white-background-min);
   }
 }
