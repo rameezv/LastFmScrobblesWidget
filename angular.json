@@ -70,18 +70,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "last-fm-scrobbles-widget:build"
+            "buildTarget": "last-fm-scrobbles-widget:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "last-fm-scrobbles-widget:build:production"
+              "buildTarget": "last-fm-scrobbles-widget:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "last-fm-scrobbles-widget:build"
+            "buildTarget": "last-fm-scrobbles-widget:build"
           }
         },
         "test": {
