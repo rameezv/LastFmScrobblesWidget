@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { apiKey, spotifyClientId, spotifyClientSecret } from 'src/api_keys';
+import { apiKey, spotifyClientId, spotifyClientSecret } from "../api-keys";
 
 @Component({
   selector: 'app-root',
