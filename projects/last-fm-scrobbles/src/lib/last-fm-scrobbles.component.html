@@ -79,7 +79,7 @@
       class="recently-played"
     >
       <h3>Recently Played:</h3>
-      <div *ngFor="let track of recentTracks" class="recent-track">
+      <div *ngFor="let track of recentTracks; trackBy: trackByTrackUrl" class="recent-track">
         <div class="album-art">
           <img
             *ngIf="

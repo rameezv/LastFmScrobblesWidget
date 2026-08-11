@@ -1,55 +1,71 @@
-import { Component, OnInit, Input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
 import { LastFmScrobblesService } from './last-fm-scrobbles.service';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, shareReplay } from 'rxjs/operators';
 import { LastFmTrack } from './interfaces';
 import { ENCODED_SPOTIFY_LOGO } from './spotify-logo';
 
-function hexToRgba(hexCode: string, opacity: number){
-  var c;
-  if(/^#([A-Fa-f0-9]{3}){1,2}$/.test(hexCode)){
-      c = hexCode.substring(1).split('');
-      if(c.length== 3){
-          c= [c[0], c[0], c[1], c[1], c[2], c[2]];
-      }
-      c= '0x'+c.join('');
-      return `rgba(${[(c>>16)&255, (c>>8)&255, c&255].join(',')},${(opacity / 100).toString()})`;
+const HEX_COLOR_RE = /^#([A-Fa-f0-9]{3}){1,2}$/;
+
+// Expands #rgb → #rrggbb; returns null if the input isn't a valid hex colour.
+function normaliseHex(hex: string): string | null {
+  if (!hex || !HEX_COLOR_RE.test(hex)) {
+    return null;
   }
-  throw new Error('Bad Hex');
+  if (hex.length === 4) {
+    return `#${hex[1]}${hex[1]}${hex[2]}${hex[2]}${hex[3]}${hex[3]}`;
+  }
+  return hex;
 }
 
-function blendColours(baseColor: string, colorToMix: string, opacity: number) {
-  const baseNum = parseInt(baseColor.replace("#",""),16);
-  let rBase = (baseNum >> 16);
-  let gBase = (baseNum >> 8 & 0x00FF);
-  let bBase = (baseNum & 0x0000FF);
-  const mixNum = parseInt(colorToMix.replace("#",""),16);
-  let rMix = (mixNum >> 16);
-  let gMix = (mixNum >> 8 & 0x00FF);
-  let bMix = (mixNum & 0x0000FF);
+function hexToRgba(hexCode: string, opacity: number): string {
+  const normalised = normaliseHex(hexCode);
+  const alpha = (opacity / 100).toString();
+  if (!normalised) {
+    return `rgba(0,0,0,${alpha})`;
+  }
+  const c = parseInt(normalised.substring(1), 16);
+  return `rgba(${(c >> 16) & 255},${(c >> 8) & 255},${c & 255},${alpha})`;
+}
 
-  const rDiff = rBase - rMix;
-  const gDiff = gBase - gMix;
-  const bDiff = bBase - bMix;
-
-  const rNew = rBase - Math.floor(rDiff*(opacity*2.55/100));
-  const gNew = gBase - Math.floor(gDiff*(opacity*2.55/100));
-  const bNew = bBase - Math.floor(bDiff*(opacity*2.55/100));
-
-  console.log(rBase, gBase, bBase);
-  console.log(rMix, gMix, bMix);
-  console.log(rDiff, gDiff, bDiff);
-  console.log(rNew, gNew, bNew);
-
-  return "#" + (0x1000000 + (rNew<255?rNew<1?0:rNew:255)*0x10000 + (gNew<255?gNew<1?0:gNew:255)*0x100 + (bNew<255?bNew<1?0:bNew:255)).toString(16).slice(1);
+function blendColours(baseColor: string, colorToMix: string, opacity: number): string {
+  const base = normaliseHex(baseColor);
+  const mix = normaliseHex(colorToMix);
+  if (!base || !mix) {
+    return base || '#000000';
+  }
+  const baseNum = parseInt(base.substring(1), 16);
+  const mixNum = parseInt(mix.substring(1), 16);
+  const rBase = (baseNum >> 16) & 0xFF;
+  const gBase = (baseNum >> 8) & 0xFF;
+  const bBase = baseNum & 0xFF;
+  const rMix = (mixNum >> 16) & 0xFF;
+  const gMix = (mixNum >> 8) & 0xFF;
+  const bMix = mixNum & 0xFF;
+  const factor = opacity * 2.55 / 100;
+  const clamp = (n: number) => Math.min(255, Math.max(0, n));
+  const rNew = clamp(rBase - Math.floor((rBase - rMix) * factor));
+  const gNew = clamp(gBase - Math.floor((gBase - gMix) * factor));
+  const bNew = clamp(bBase - Math.floor((bBase - bMix) * factor));
+  return `#${((1 << 24) | (rNew << 16) | (gNew << 8) | bNew).toString(16).slice(1)}`;
 }
 
 @Component({
   selector: 'last-fm-scrobbles',
   templateUrl: './last-fm-scrobbles.component.html',
-  styleUrls: ['./last-fm-scrobbles.component.scss']
+  styleUrls: ['./last-fm-scrobbles.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LastFmScrobblesComponent implements OnInit {
+export class LastFmScrobblesComponent implements OnInit, OnChanges, OnDestroy {
   @Input() apiKey: string;
   @Input() username: string;
   @Input() spotifyClientId: string;
@@ -57,82 +73,123 @@ export class LastFmScrobblesComponent implements OnInit {
   @Input() theme: 'black'|'white' = 'black';
   @Input() accentColor: string = '#FF6E6E';
   @Input() backgroundColor?: string;
+
   recentTracks$: Observable<LastFmTrack[]>;
   recentlyPlayedTracks$: Observable<LastFmTrack[]>;
-  latestTrack$: Observable<LastFmTrack>;
+  latestTrack$: Observable<LastFmTrack | null>;
   isNowPlaying$: Observable<boolean>;
+
   expandRecent = false;
   audioPlayer = new Audio();
   spotifyLogo = ENCODED_SPOTIFY_LOGO;
 
-  get darkAccentColor() {
-    return hexToRgba(this.accentColor, 15);
-  }
+  // Precomputed derived colours. These only need to change when `theme`,
+  // `accentColor`, or `backgroundColor` changes, so we compute them once
+  // in ngOnChanges instead of on every change-detection tick.
+  darkAccentColor = '';
+  medAccentColor = '';
+  brightAccentColor = '';
+  bgColor = '#000000';
+  accentBackground = '';
+  bgGradient = '';
 
-  get medAccentColor() {
-    return hexToRgba(this.accentColor, 25);
-  }
+  private readonly onAudioStateChange = () => this.cdr.markForCheck();
+  private readonly onAudioEnded = () => {
+    this.audioPlayer.src = '';
+    this.cdr.markForCheck();
+  };
 
-  get brightAccentColor() {
-    return hexToRgba(this.accentColor, 35);
-  }
+  constructor(
+    private lastFmScrobblesService: LastFmScrobblesService,
+    private cdr: ChangeDetectorRef,
+  ) {}
 
-
-  get bgColor() {
-    if (this.backgroundColor) {
-      return this.backgroundColor;
-    }
-    if (this.theme === 'white') {
-      return '#ffffff'
-    }
-    return '#000000';
-  }
-
-  get accentBackground() {
-    return blendColours(this.bgColor, this.accentColor, 15);
-  }
-
-  get bgGradient() {
-    return `linear-gradient(0deg, ${hexToRgba(this.bgColor, 100)} 0%,  ${hexToRgba(this.bgColor, 70)} 25%, ${hexToRgba(this.bgColor, 0)} 100%)`
-  }
-
-  constructor(private lastFmScrobblesService: LastFmScrobblesService) {}
   ngOnInit(): void {
-    this.recentTracks$ = this.lastFmScrobblesService.recentTracks$;
-    this.recentlyPlayedTracks$ = this.recentTracks$.pipe(
-      map(tracks => tracks.filter((_, i) => i > 0)),
+    this.refreshColors();
+
+    this.recentTracks$ = this.lastFmScrobblesService.recentTracks$.pipe(
+      shareReplay(1),
     );
     this.latestTrack$ = this.recentTracks$.pipe(
-      map(tracks => tracks ? tracks[0] : null)
+      map(tracks => (tracks && tracks.length > 0) ? tracks[0] : null),
+      shareReplay(1),
+    );
+    this.recentlyPlayedTracks$ = this.recentTracks$.pipe(
+      map(tracks => tracks ? tracks.slice(1) : []),
+      shareReplay(1),
     );
     this.isNowPlaying$ = this.latestTrack$.pipe(
-      map(track => track['@attr'] ? track['@attr'].nowplaying === 'true' : false)
+      map(track => !!(track && track['@attr'] && track['@attr'].nowplaying === 'true')),
     );
+
     this.lastFmScrobblesService.init(this.username, this.apiKey, this.spotifyClientId, this.spotifyClientSecret);
-    this.audioPlayer.onended = () => {
-      this.audioPlayer.src = '';
+
+    this.audioPlayer.addEventListener('play', this.onAudioStateChange);
+    this.audioPlayer.addEventListener('pause', this.onAudioStateChange);
+    this.audioPlayer.addEventListener('error', this.onAudioStateChange);
+    this.audioPlayer.addEventListener('ended', this.onAudioEnded);
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['theme'] || changes['accentColor'] || changes['backgroundColor']) {
+      this.refreshColors();
     }
+  }
+
+  ngOnDestroy(): void {
+    this.audioPlayer.pause();
+    this.audioPlayer.src = '';
+    this.audioPlayer.removeEventListener('play', this.onAudioStateChange);
+    this.audioPlayer.removeEventListener('pause', this.onAudioStateChange);
+    this.audioPlayer.removeEventListener('error', this.onAudioStateChange);
+    this.audioPlayer.removeEventListener('ended', this.onAudioEnded);
+  }
+
+  private refreshColors(): void {
+    this.bgColor = this.backgroundColor
+      ? this.backgroundColor
+      : (this.theme === 'white' ? '#ffffff' : '#000000');
+    this.darkAccentColor = hexToRgba(this.accentColor, 15);
+    this.medAccentColor = hexToRgba(this.accentColor, 25);
+    this.brightAccentColor = hexToRgba(this.accentColor, 35);
+    this.accentBackground = blendColours(this.bgColor, this.accentColor, 15);
+    this.bgGradient =
+      `linear-gradient(0deg, ${hexToRgba(this.bgColor, 100)} 0%, `
+      + `${hexToRgba(this.bgColor, 70)} 25%, `
+      + `${hexToRgba(this.bgColor, 0)} 100%)`;
   }
 
   getSpotifyInfoForTrack(track: LastFmTrack) {
     return this.lastFmScrobblesService.getSpotifyInfo(track);
   }
 
-  playAudio(audioUrl: string, event) {
+  trackByTrackUrl(index: number, track: LastFmTrack): string {
+    return track && track.url ? track.url : String(index);
+  }
+
+  playAudio(audioUrl: string, event: Event) {
+    event.stopPropagation();
+    event.preventDefault();
+    if (!audioUrl) {
+      return;
+    }
     if (audioUrl !== this.audioPlayer.src) {
       this.audioPlayer.pause();
       this.audioPlayer.src = audioUrl;
       this.audioPlayer.load();
-      this.audioPlayer.play();
+      this.startPlayback();
+    } else if (this.audioPlayer.paused) {
+      this.startPlayback();
     } else {
-      if(this.audioPlayer.paused) {
-        this.audioPlayer.play();
-      } else {
-        this.audioPlayer.pause();
-      }
+      this.audioPlayer.pause();
     }
-    event.stopPropagation();
-    event.preventDefault();
+  }
+
+  private startPlayback(): void {
+    const result = this.audioPlayer.play();
+    if (result && typeof result.catch === 'function') {
+      result.catch(() => this.cdr.markForCheck());
+    }
   }
 
   get currentAudio() {
